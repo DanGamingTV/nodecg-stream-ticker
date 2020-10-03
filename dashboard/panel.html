@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+<form id="update-overlay">
+<label for="brand-text">Brand Text</label>
+<input id="brand-text">
+<br>
+<label for="story-text">Ticker Text</label>
+<input id="story-text">
+<br>
+<button id="storyToggle">Hide Ticker</button>
+<hr>
+<button type="submit">Update</button>
+</form>
+	<script>
+		const brandReplicant = nodecg.Replicant('brandReplicant');
+		const tickerReplicant = nodecg.Replicant('tickerReplicant');
+		const showTicker = nodecg.Replicant('showTicker')
+		const textForm = document.querySelector("#update-overlay");
+		const textBox = document.querySelector("#brand-text");
+		const textBox2 = document.querySelector("#story-text")
+		//var tickerShown = showTicker.value;
+		brandReplicant.on('change', value => {
+			document.querySelector("#brand-text").value = value;
+		})
+		tickerReplicant.on('change', value => {
+			document.querySelector("#story-text").value = value;
+		})
+		showTicker.on('change', value => {
+			document.querySelector("#storyToggle").innerHTML = value ? "Hide Ticker" : "Show Ticker"
+		})
+		document.querySelector("#storyToggle").onclick = () => {
+			showTicker.value = !showTicker.value;
+		}
+		textForm.addEventListener('submit', e => {
+			e.preventDefault();
+			brandReplicant.value = textBox.value;
+			tickerReplicant.value = textBox2.value;
+		})
+	</script>
+</body>
+</html>

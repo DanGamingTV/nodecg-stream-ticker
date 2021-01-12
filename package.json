@@ -27,6 +27,13 @@
         "width": 2,
         "file": "panel.html",
         "headerColor": "#525F78"
+      },
+      {
+        "name": "obs",
+        "title": "OBS",
+        "width": 3,
+        "file": "obs.html",
+        "headerColor": "#525F78"
       }
     ],
     "graphics": [
@@ -38,5 +45,9 @@
     ]
   },
   "repository": "https://github.com/nodecg/nodecg.git",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "bower-npm-resolver": "^0.11.0",
+    "nodecg-utility-obs": "^6.1.5"
+  }
 }

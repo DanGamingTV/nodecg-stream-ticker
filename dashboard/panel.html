@@ -15,15 +15,61 @@
 <button id="storyToggle">Hide Ticker</button>
 <hr>
 <button type="submit">Update</button>
+<hr>
+<h2>Stats</h2>
+<label for="willReshow">Going to reshow ticker</label>
+<h3 id="willReshow">No data</h3>
+<br>
+<label for="willCopyright">Going to show copyright label</label>
+<h3 id="willCopyright">No data</h3>
+<label id="epics" for="copyrightCountdown">Time until copyright message</label>
+<h3 id="copyrightCountdown">No data</h3>
 </form>
+<script>
+	const $ = elem => document.querySelector(elem);
+	function doCountdown(target, date, msg, cb) {
+    var second = 1000,
+        minute = second * 60,
+        hour = minute * 60,
+        day = hour * 24,
+        birthday = date;
+    let countDown = new Date(birthday).getTime(),
+        x = setInterval(function () {
+            let now = new Date().getTime(),
+                distance = countDown - now;
+            target.innerText = `${Math.floor((distance % (hour)) / (minute))}m ${Math.floor((distance % (minute)) / second)}s`
+            if (distance < 0) {
+                target.innerText = msg;
+				clearInterval(x);
+				//cb()
+            }
+        }, 0)
+}
+</script>
 	<script>
 		const brandReplicant = nodecg.Replicant('brandReplicant');
 		const tickerReplicant = nodecg.Replicant('tickerReplicant');
+		const statsReplicant = nodecg.Replicant('statsReplicant')
 		const showTicker = nodecg.Replicant('showTicker')
 		const textForm = document.querySelector("#update-overlay");
 		const textBox = document.querySelector("#brand-text");
 		const textBox2 = document.querySelector("#story-text")
 		//var tickerShown = showTicker.value;
+		statsReplicant.on('change', value => {
+			$("#willReshow").innerHTML = value["willReshow"]
+			$("#willCopyright").innerHTML = value["willCopyright"]
+			if (value["willCopyright"] == true) {
+				if (value["copyrightShowing"] == false) {
+					doCountdown($("#copyrightCountdown"), Date.now()+value["copyrightCountdown"], "copyright shown", () => {
+						$("#epics").innerHTML = "Time until copyright hides";
+						doCountdown($("#copyrightCountdown"), Date.now()+value["copyrightDuration"], "copyright hidden", () => {
+						$("#epics").innerHTML = "Time until copyright starts"
+					})
+					})
+				}
+			}
+			
+		})
 		brandReplicant.on('change', value => {
 			document.querySelector("#brand-text").value = value;
 		})
@@ -31,10 +77,11 @@
 			document.querySelector("#story-text").value = value;
 		})
 		showTicker.on('change', value => {
-			document.querySelector("#storyToggle").innerHTML = value ? "Hide Ticker" : "Show Ticker"
+			document.querySelector("#storyToggle").innerHTML = value.bool ? "Hide Ticker" : "Show Ticker"
 		})
 		document.querySelector("#storyToggle").onclick = () => {
-			showTicker.value = !showTicker.value;
+			showTicker.value = {bool: !showTicker.value.bool, fromTransition: false};
+			// showTicker.value = JSON.parse(toChangeTo)
 		}
 		textForm.addEventListener('submit', e => {
 			e.preventDefault();

@@ -47,7 +47,9 @@
 			margin-bottom: 25px;
 			/* background-color: red; */
 		}
-		#Rounded_Rectangle_1, #Rounded_Rectangle_1_clip {
+
+		#Rounded_Rectangle_1,
+		#Rounded_Rectangle_1_clip {
 			transition: d 0.5s;
 		}
 
@@ -73,24 +75,25 @@
 				</style>
 				<clipPath id="textClip">
 					<path id="Rounded_Rectangle_1_clip" data-name="Rounded Rectangle 1 Clip"
-					d="M400,0H1770a50,50,0,0,1,50,50v50a0,0,0,0,1,0,0H450a50,50,0,0,1-50-50V0A0,0,0,0,1,400,0Z">
-					
-			</path>
+						d="M400,0H1770a50,50,0,0,1,50,50v50a0,0,0,0,1,0,0H450a50,50,0,0,1-50-50V0A0,0,0,0,1,400,0Z">
+
+					</path>
 				</clipPath>
 				<path id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1"
 					d="M400,0H1770a50,50,0,0,1,50,50v50a0,0,0,0,1,0,0H450a50,50,0,0,1-50-50V0A0,0,0,0,1,400,0Z">
-					
-			</path>
+
+				</path>
 				<path id="Rounded_Rectangle_2" class="st0"
 					d="M0,0h400c27.6,0,50,22.4,50,50v50l0,0H50C22.4,100,0,77.6,0,50V0L0,0z">
 				</path>
-				<text id="brand" fill="black" x="0" y="61%" style="/* z-index: 33; */font-size: 61.875px; font-weight: 800;" height="100"
+				<text id="brand" fill="black" x="0" y="61%"
+					style="/* z-index: 33; */font-size: 61.875px; font-weight: 800;" height="100"
 					transform="translate(45 5) scale(1.150)">danno.nz</text>
-				
-					<g clip-path="url(#textClip)">
-						<text id="story" fill="white" x="0" y="61%" style="/* z-index: 33; */font-size: 59px;" height="100"
-					transform="translate(475 8) scale(1.1)">danno.nz</text>
-					</g>
+
+				<g clip-path="url(#textClip)">
+					<text id="story" fill="white" x="0" y="61%" style="/* z-index: 33; */font-size: 59px;" height="100"
+						transform="translate(475 8) scale(1.1)">danno.nz</text>
+				</g>
 			</svg>
 
 
@@ -99,67 +102,67 @@
 	</div>
 
 	<script>
-		//var curve = 50;
-		//var p1width = 450;
-		//var totalwidth = 400;
-		//var blackD = `M${p1width-curve},0H${totalwidth-curve}a${curve},${curve},0,0,1,${curve},${curve}v${curve}a0,0,0,0,1,0,0H${p1width}a${curve},${curve},0,0,1-${curve}-${curve}V0A0,0,0,0,1,${p1width-curve},0Z`
-		
-		function getTextWidth() { 
-  
-let text = document.querySelector("#story") 
-//$("#story")
-  width = Math.ceil(text.clientWidth*1.1)+25; 
-  return width;
-//   document.body.removeChild(text); 
-}
-		
-		
+		function getTextWidth() {
+			let text = document.querySelector("#story")
+			width = Math.ceil(text.clientWidth * 1.1) + 25;
+			return width;
+		}
 		function getD(wantedWidth) {
 			return `M400,0H${400+wantedWidth+(wantedWidth == 0 ? 0 : 25)}a50,50,0,0,1,50,50v50a0,0,0,0,1,0,0H450a50,50,0,0,1-50-50V0A0,0,0,0,1,400,0Z`
 		}
-		//blackD = ""
 		function setStoryWidth(content) {
 			document.querySelector("#Rounded_Rectangle_1").setAttribute('d', getD(content))
-				document.querySelector("#Rounded_Rectangle_1_clip").setAttribute('d', getD(content))
+			document.querySelector("#Rounded_Rectangle_1_clip").setAttribute('d', getD(content))
 		}
 		const showTicker = nodecg.Replicant('showTicker')
 		const brandReplicant = nodecg.Replicant('brandReplicant');
 		brandReplicant.on('change', value => {
-			// document.querySelector("#text-box").innerHTML = value;
 			document.querySelector("#brand").innerHTML = value;
 		})
 		const tickerReplicant = nodecg.Replicant('tickerReplicant');
 		tickerReplicant.on('change', value => {
-			// document.querySelector("#text-box").innerHTML = value;
-			//if (value !== "") {
-				//setStoryWidth(0)
-				document.querySelector("#story").innerHTML = value;
-				if(showTicker.value == true) {
-					if(!value.replace(/\s/g, '').length) {
-						setStoryWidth(0)
-					} else {
-						setStoryWidth(getTextWidth() <= 1345 ? getTextWidth() : 1345)
-					}
-					
+			document.querySelector("#story").innerHTML = value;
+			if (showTicker.value.bool == true) {
+				if (!value.replace(/\s/g, '').length) {
+					setStoryWidth(0)
+				} else {
+					setStoryWidth(getTextWidth() <= 1345 ? getTextWidth() : 1345)
 				}
-			
-			
-			// document.querySelector("#Rounded_Rectangle_1").setAttribute('d', getD(getTextWidth() <= 1345 ? getTextWidth() : 1345))
-			// document.querySelector("#Rounded_Rectangle_1_clip").setAttribute('d', getD(getTextWidth() <= 1345 ? getTextWidth() : 1345))
-		//	} else {
-				// document.querySelector("#Rounded_Rectangle_1").setAttribute('d', getD(0))
-				// document.querySelector("#Rounded_Rectangle_1_clip").setAttribute('d', getD(0))
-				//setStoryWidth(0)
-		//	}
-		})
-		showTicker.on('change', value => {
-			if (value == true) {
-				setStoryWidth(getTextWidth() <= 1345 ? getTextWidth() : 1345)
-			} else {
-				setStoryWidth(0)
 			}
 		})
-
+		showTicker.on('change', value => {
+			console.log(value)
+			if (value.bool == true) {
+				setStoryWidth(getTextWidth() <= 1345 ? getTextWidth() : 1345)
+				if (value.fromTransition == false) {
+					canReshowStory = true;
+				}
+			} else {
+				setStoryWidth(0)
+				if(value.fromTransition == false) {
+					canReshowStory = false;
+				}
+			}
+		})
+		const transitioning = nodecg.Replicant('doTransitionHide');
+		// var localTransitioning = false;
+		var canReshowStory = false;
+		
+		transitioning.on('change', newVal => {
+			nodecg.log.info(`canReshowStory = ${canReshowStory}`)
+			if (newVal == true) {
+				console.log("newval = true")
+				if (showTicker.value.bool == true) {
+					canReshowStory = true;
+					showTicker.value = {bool: false, fromTransition: true};
+				}
+			} else {
+				console.log("newval dont = true")
+				if (canReshowStory == true) {
+					showTicker.value = {bool: true, fromTransition: true};
+				}
+			}
+		})
 	</script>
 </body>
 
